@@ -32,12 +32,13 @@ under the License.
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util.xsd">
+                           http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
 
     <bean id="oauthProvider"
           class="org.apache.cxf.rs.security.oauth2.grants.code.JPACMTCodeDataProvider"
           init-method="init" destroy-method="close">
+        <property name="entityManager" ref="entityManager"/>
     </bean>
 
 
@@ -58,6 +59,10 @@ under the License.
         </tx:attributes>
     </tx:advice>
 
+    <bean name="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
     <beans profile="hibernate">
         <bean id="entityManagerFactory"
               class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

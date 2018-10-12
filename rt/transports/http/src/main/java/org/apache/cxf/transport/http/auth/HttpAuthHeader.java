@@ -67,14 +67,14 @@ public final class HttpAuthHeader {
         }
         this.params = parseHeader();
     }
-    
+
     public HttpAuthHeader(String authType, Map<String, String> params) {
         this.authType = authType;
         this.params = params;
         this.fullContent = paramsToString();
         this.fullHeader = authType + " " + fullContent;
     }
-    
+
     private String paramsToString() {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
@@ -84,7 +84,7 @@ public final class HttpAuthHeader {
                 if (!first) {
                     builder.append(", ");
                 }
-                if (entry.getKey().equals("nc") 
+                if (entry.getKey().equals("nc")
                     || entry.getKey().equals("qop")
                     || entry.getKey().equals("algorithm")) {
                     builder.append(entry.getKey() + "=" + param + "");
@@ -98,7 +98,7 @@ public final class HttpAuthHeader {
     }
 
     private Map<String, String> parseHeader() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         try {
             StreamTokenizer tok = new StreamTokenizer(new StringReader(this.fullContent));
             tok.quoteChar('"');
@@ -119,11 +119,12 @@ public final class HttpAuthHeader {
                     if (value.indexOf(".") > 0) {
                         value = value.substring(0, value.indexOf("."));
                     }
-                    String pad = "";
+                    StringBuilder pad = new StringBuilder();
+                    pad.append("");
                     for (int i = 0; i < 8 - value.length(); i++) {
-                        pad = pad + "0";
+                        pad.append("0");
                     }
-                    value = pad + value;
+                    value = pad.toString() + value;
                 } else {
                     value = tok.sval;
                 }
@@ -136,9 +137,9 @@ public final class HttpAuthHeader {
     }
 
     /**
-     * Extracts the authorization realm from the 
+     * Extracts the authorization realm from the
      * "WWW-Authenticate" Http response header.
-     * 
+     *
      * @param authenticate content of the WWW-Authenticate header
      * @return The realm, or null if it is non-existent.
      */
@@ -150,15 +151,15 @@ public final class HttpAuthHeader {
     public boolean authTypeIsDigest() {
         return AUTH_TYPE_DIGEST.equals(this.authType);
     }
-    
+
     public boolean authTypeIsBasic() {
         return AUTH_TYPE_BASIC.equals(this.authType);
     }
-    
+
     public boolean authTypeIsNegotiate() {
-        return AUTH_TYPE_DIGEST.equals(this.authType);
+        return AUTH_TYPE_NEGOTIATE.equals(this.authType);
     }
-    
+
     public String getAuthType() {
         return authType;
     }

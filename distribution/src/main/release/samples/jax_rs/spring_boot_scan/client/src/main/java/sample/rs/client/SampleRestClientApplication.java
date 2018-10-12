@@ -44,18 +44,15 @@ import sample.rs.service.HelloService;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableJaxRsProxyClient
-public final class SampleRestClientApplication {
-    private SampleRestClientApplication() {
-    }
-    
+public class SampleRestClientApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder(SampleRestClientApplication.class)
             .web(false)
             .run(args);
-    }  
+    }
     @Bean
     CommandLineRunner initProxyClient(final HelloService service) {
-      
+
         return new CommandLineRunner() {
             @Override
             public void run(String... runArgs) throws Exception {
@@ -76,11 +73,11 @@ public final class SampleRestClientApplication {
         @Autowired
         DiscoveryClient discoveryClient;
         List<String> addresses = new LinkedList<String>();
-        
+
         EurekaFailoverFeature() {
             super("eureka://registry");
         }
-        
+
         @Override
         public FailoverStrategy getStrategy()  {
             for (ServiceInstance s : discoveryClient.getInstances("jaxrs-hello-world-service")) {

@@ -24,7 +24,7 @@
             <cxf:logging/>
         </cxf:features>
     </cxf:bus>
-    <jaxws:endpoint xmlns:s="http://www.example.org/contract/DoubleIt" id="doubleittransportsaml1endorsing" implementor="org.apache.cxf.systest.sts.intermediary_transformation.IntermediaryCachingPortTypeImpl" endpointName="s:DoubleItTransportSAML1EndorsingPort" serviceName="s:DoubleItService" depends-on="ClientAuthHttpsSettings" address="https://localhost:${testutil.ports.intermediary_transformation.Intermediary}/doubleit/services/doubleittransportsaml1endorsing" wsdlLocation="org/apache/cxf/systest/sts/intermediary_transformation/DoubleIt.wsdl">
+    <jaxws:endpoint xmlns:s="http://www.example.org/contract/DoubleIt" id="doubleittransportsaml1endorsing" implementor="org.apache.cxf.systest.sts.intermediary_transformation.IntermediaryCachingPortTypeImpl" endpointName="s:DoubleItTransportSAML1EndorsingPort" serviceName="s:DoubleItService" depends-on="ClientAuthHttpsSettings" address="https://localhost:${testutil.ports.intermediary_transformation.IntermediaryCaching}/doubleit/services/doubleittransportsaml1endorsing" wsdlLocation="org/apache/cxf/systest/sts/intermediary_transformation/DoubleIt.wsdl">
         <jaxws:properties>
             <entry key="security.callback-handler" value="org.apache.cxf.systest.sts.common.CommonCallbackHandler"/>
             <entry key="security.signature.properties" value="serviceKeystore.properties"/>
@@ -32,7 +32,7 @@
         </jaxws:properties>
     </jaxws:endpoint>
     <httpj:engine-factory id="ClientAuthHttpsSettings" bus="cxf">
-        <httpj:engine port="${testutil.ports.intermediary_transformation.Intermediary}">
+        <httpj:engine port="${testutil.ports.intermediary_transformation.IntermediaryCaching}">
             <httpj:tlsServerParameters>
                 <sec:keyManagers keyPassword="skpass">
                     <sec:keyStore type="jks" password="sspass" resource="keys/servicestore.jks"/>
@@ -42,7 +42,6 @@
         </httpj:engine>
     </httpj:engine-factory>
     <bean id="delegationCallbackHandler" class="org.apache.cxf.ws.security.trust.delegation.ReceivedTokenCallbackHandler"/>
-    <bean id="defaultTokenStore" class="org.apache.cxf.ws.security.tokenstore.MemoryTokenStore"/>
     <jaxws:client name="{http://www.example.org/contract/DoubleIt}DoubleItTransportSAML2Port" createdFromAPI="true">
         <jaxws:properties>
             <entry key="security.sts.client">
@@ -63,10 +62,6 @@
                     </property>
                 </bean>
             </entry>
-            <entry key="org.apache.cxf.ws.security.tokenstore.TokenStore">
-                <ref bean="defaultTokenStore"/>
-            </entry>
-            <entry key="ws-security.cache.issued.token.in.endpoint" value="false"/>
         </jaxws:properties>
     </jaxws:client>
     <http:conduit name="https://localhost.*">

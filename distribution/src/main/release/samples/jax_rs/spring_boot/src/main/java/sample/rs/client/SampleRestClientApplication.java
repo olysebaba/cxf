@@ -31,18 +31,15 @@ import sample.rs.service.HelloService;
 @SpringBootApplication
 @EnableJaxRsWebClient
 @EnableJaxRsProxyClient
-public final class SampleRestClientApplication {
-    private SampleRestClientApplication() {
-    }
-    
+public class SampleRestClientApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder(SampleRestClientApplication.class)
             .web(false)
             .run(args);
-    }  
+    }
     @Bean
     CommandLineRunner initWebClientRunner(final WebClient webClient) {
-      
+
         return new CommandLineRunner() {
 
             @Override
@@ -53,7 +50,7 @@ public final class SampleRestClientApplication {
     }
     @Bean
     CommandLineRunner initProxyClientRunner(final HelloService client) {
-      
+
         return new CommandLineRunner() {
 
             @Override
